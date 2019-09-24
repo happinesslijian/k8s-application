@@ -1,0 +1,29 @@
+expose:
+  type: ingress
+  tls:
+    enabled: true
+  ingress:
+    hosts:
+      core: harbor.test.com
+      notary: harbor.test.com
+    annotations:
+      kubernetes.io/ingress.class: "nginx"
+      ingress.kubernetes.io/ssl-redirect: "true"
+      ingress.kubernetes.io/proxy-body-size: "0"
+
+externalURL: https://harbor.test.com
+
+persistence:
+  enabled: true
+  resourcePolicy: "keep"
+  persistentVolumeClaim:
+    registry:
+      storageClass: "harbor"
+    chartmuseum:
+      storageClass: "harbor"
+    jobservice:
+      storageClass: "harbor"
+    database:
+      storageClass: "harbor"
+    redis:
+      storageClass: "harbor"
