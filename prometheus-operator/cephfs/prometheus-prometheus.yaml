@@ -1,0 +1,41 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  labels:
+    prometheus: k8s
+  name: k8s
+  namespace: monitoring
+spec:
+  alerting:
+    alertmanagers:
+    - name: alertmanager-main
+      namespace: monitoring
+      port: web
+  baseImage: quay.io/prometheus/prometheus
+  nodeSelector:
+    kubernetes.io/os: linux
+  podMonitorSelector: {}
+  replicas: 2
+  resources:
+    requests:
+      memory: 400Mi
+  ruleSelector:
+    matchLabels:
+      prometheus: k8s
+      role: alert-rules
+  securityContext:
+    privileged: true #使用cephfs必要参数
+    fsGroup: 0 #由默认2000改为0
+    runAsNonRoot: false #由true改为false
+    runAsUser: 0 #由默认1000改为0
+  storage: 
+    volumeClaimTemplate:
+      spec:
+        storageClassName: prometheus #提前准备一个storageClass
+        resources:
+          requests:
+            storage: 10Gi
+  serviceAccountName: prometheus-k8s
+  serviceMonitorNamespaceSelector: {}
+  serviceMonitorSelector: {}
+  version: v2.11.0
