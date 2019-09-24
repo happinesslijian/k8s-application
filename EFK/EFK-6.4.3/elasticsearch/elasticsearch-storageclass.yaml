@@ -1,0 +1,20 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: cephfs-logging #cephfs类型的sc
+provisioner: ceph.com/cephfs #cephfs类型的sc
+parameters:
+  monitors: 192.168.100.160:6789
+  adminId: admin
+  adminSecretName: ceph-secret
+  adminSecretNamespace: "default"
+  claimRoot: /efk6.4.3
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ceph-secret
+  namespace: default
+data:
+  key: QVFDSkNVRmROTS9lSEJBQVpWcDZ6Ly9Ec3ZOTnp6eXdSZS9ZSVE9PQ==
+  #key: 使用命令ceph auth get-key client.admin | base64获取到的key添加到上面

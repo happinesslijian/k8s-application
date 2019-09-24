@@ -1,0 +1,10 @@
+<source>
+@id fluentd-containers.log #引用日志源的标识符
+@type tail #type是fluentd内置的指令，tail表示fluentd从上次读取的位置通过tail不断的获取数据
+path /var/log/containers/*.log #所有的容器默认日志存放位置
+pos_file /var/log/fluentd-containers.log.pos #检查点，如果fluentd重启了，它会使用此位置中的文件来进行恢复日志收集
+time_format %Y-%m-%dT%H:%M:%S.%NZ
+tag raw.kubernetes.* #日志源和目标的路由匹配 通过tag标签进行匹配
+format json
+read_from_head true
+</source>
