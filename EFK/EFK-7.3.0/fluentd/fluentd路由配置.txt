@@ -1,0 +1,24 @@
+
+
+<match **> #标识一个目标标签 **是正则表达式 表示把日志发送给elasticsearch
+@id elasticsearch #目标的一个唯一标识符
+@type elasticsearch #输出的对象 这里输出对象是elasticsearch
+@log_level info #日志级别 info表示该级别之上的日志都被路由到elasticsearch（包括INFO WARNING ERROR）
+include_tag_key true
+type_name fluentd
+host "#{ENV['OUTPUT_HOST']}" #定义 Elasticsearch 的地址
+port "#{ENV['OUTPUT_PORT']}" #定义 Elasticsearch 的地址
+logstash_format true #elasticsearch对日志数据进行反向索引进行搜索logstash_format=true表示fluentd会以logstash合适来转发日志数据
+<buffer> #fluentd允许在目标不可用的时候进行缓存
+@type file
+path /var/log/fluentd-buffers/kubernetes.system.buffer
+flush_mode interval
+retry_type exponential_backoff
+flush_thread_count 2
+flush_interval 5s
+retry_forever
+retry_max_interval 30
+chunk_limit_size "#{ENV['OUTPUT_BUFFER_CHUNK_LIMIT']}"
+queue_limit_length "#{ENV['OUTPUT_BUFFER_QUEUE_LIMIT']}"
+overflow_action block
+</buffer>
