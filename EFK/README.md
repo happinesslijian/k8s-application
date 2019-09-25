@@ -1,6 +1,4 @@
 # EFK in k8s 
-### 克隆本项目到本地
-**`git clone https://github.com/happinesslijian/EFK.git`**
 > 根据你的需求选择不同版本进行安装 \
 > Select different versions to install according to your requirements
 
