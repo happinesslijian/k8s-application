@@ -1,8 +1,6 @@
-# [nfs安装](https://github.com/happinesslijian/install-nfs)
+# [nfs安装](https://github.com/happinesslijian/VM/tree/master/VM%E5%AE%89%E8%A3%85nfs)
 ## k8s使用NFS做持久化动态存储
-### 克隆本项目到本地并创建
 ```
-git clone https://github.com/happinesslijian/nfs.git
 cd nfs/nfs-storageclass
 kubectl apply -f .
 ``` 
