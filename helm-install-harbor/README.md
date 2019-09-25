@@ -1,7 +1,7 @@
 ## harbor in k8s for nfs to StorageClass
 注：这里使用helm v2版本的helm进行部署harbor 
-- [install helm v2.14.1](https://github.com/happinesslijian/helm-install-harbor/tree/master/install%20helm%20v2.14.1)
-- [install nfs StorageClass](https://github.com/happinesslijian/nfs)
+- [install helm v2.14.1](https://github.com/happinesslijian/k8s-application/tree/master/helm-install-harbor/install%20helm%20v2.14.1)
+- [install nfs StorageClass](https://github.com/happinesslijian/k8s-application/tree/master/nfs)
 ### 克隆官方chart
 ```
 git clone https://github.com/goharbor/harbor-helm
