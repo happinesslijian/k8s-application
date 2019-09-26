@@ -1,6 +1,6 @@
 # EFK-7.3.0
 ## efk in k8s for nfs to storageclass
-- 安装nfs-storageclass[传送门](https://github.com/happinesslijian/nfs)
+- 安装nfs-storageclass[传送门](https://github.com/happinesslijian/k8s-application/tree/master/nfs)
 ---
 ```
 创建logging命名空间
