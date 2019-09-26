@@ -7,4 +7,4 @@
 | 版本| storageClassName|PROVISIONER|type
 |:--:|:--:|:--:|:--:|
 |EFK6.4.3|cephfs-logging|ceph.com/cephfs|cephfs
-|EFK7.3.0|course-nfs-storage|fuseim.pri/ifs|nfs
+|EFK7.3.0|course-nfs-storage|fuseim.pri/ifs|nfs 
