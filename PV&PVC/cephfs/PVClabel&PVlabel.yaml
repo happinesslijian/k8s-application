@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ceph-secret
+  namespace: default
+data:
+#key: AQCTpD9d74lPNxAAHcBMAUQdps7d9eLqYhPyQg== 使用命令ceph auth get-key client.admin | base64获取到的如下 必须base64加密后的 或者在cephfs mon执行命令cat /etc/ceph/ceph.client.admin.keyring  echo "AQCTpD9d74lPNxAAHcBMAUQdps7d9eLqYhPyQg==" | base64 两种方法
+  key: QVFDSkNVRmROTS9lSEJBQVpWcDZ6Ly9Ec3ZOTnp6eXdSZS9ZSVE9PQ==
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: cephfs
+  labels:
+    app: cephfs #这里指定了app=cephfs的标签
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  cephfs:
+    monitors:
+      - 192.168.100.160:6789 #cephfs存储方式
+    user: admin
+    secretRef:
+      name: ceph-secret
+    readOnly: false
+  persistentVolumeReclaimPolicy: Recycle
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cephfs-pvc
+  namespace: ceph
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      app: cephfs #这里指定了app=cephfs的标签

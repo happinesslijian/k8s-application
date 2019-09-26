@@ -1,0 +1,29 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: example-PVClabel
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  selector:
+    matchLabels:
+      app: nfs #这里指定了app=nfs的标签
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: example-PVlabel
+  labels:
+    app: nfs #这里指定了app=nfs的标签
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+  - ReadWriteOnce  #单机可读写ReadWriteOnce #多机可读写ReadWriteMany #多机只读ReadOnlyMany 
+  persistentVolumeReclaimPolicy: Recycle  #保留Retain #回收Recycle #删除Delete
+  nfs:
+    server: 192.168.100.158
+    path: /data/k8s
