@@ -15,5 +15,5 @@ git clone https://github.com/coreos/kube-prometheus.git
 vi prometheus-prometheus.yaml
 ```
 [更改前如图](https://i.loli.net/2019/09/09/Nvof6OAnRyirE8h.png) \
-[更改后如图](https://i.loli.net/2019/09/09/3t7NZzQPpE5s1u4.png) \
+[更改后如图](https://i.loli.net/2019/09/29/nRkrHo9VsXKpDif.png) \
 更改完成后更新prometheus-prometheus.yaml文件即可
