@@ -14,5 +14,5 @@ vi prometheus-prometheus.yaml
 vi prometheus-prometheus.yaml
 ```
 [更改前如图](https://i.loli.net/2019/09/09/DPh2mbxsBtlcvLf.png) \
-[更改后如图](https://i.loli.net/2019/09/29/Nj6evfrFRTV5J7U.png) \
+[更改后如图](https://i.loli.net/2019/09/29/r5gmDZ3lGCsMn4d.png) \
 更改完成后更新prometheus-prometheus.yaml文件即可
