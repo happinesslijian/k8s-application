@@ -31,10 +31,9 @@ mv linux-amd64/tiller /usr/local/bin/
 ```
 - 安装 Tiller 并为其配置 Service account
 ```
-helm init --upgrade \
--i registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:v2.14.2 \
---stable-repo-url https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts \
---service-account tiller
+helm init --upgrade --tiller-image registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:v2.14.2
+kubectl create -f RBAC.yaml
+kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
 ```
 - 验证helm版本
 ```
