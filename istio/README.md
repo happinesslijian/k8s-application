@@ -63,4 +63,8 @@ EOF
 helm install install/kubernetes/helm/istio --name istio --namespace istio-system -f istio.yaml
 watch kubectl get pod -n istio-system
 ```
-`完成安装后,默认SVC都是ClusterIP,手动换成NodePort即可打开web界面`
+`完成安装后,默认SVC都是ClusterIP,手动把下面SVC换成NodePort即可打开web界面` \
+**kiali** \
+**jaeger-query** \
+**grafana** \
+**prometheus**
