@@ -7,9 +7,9 @@
 git clone https://github.com/goharbor/harbor-helm
 cd harbor-helm
 git checkout 1.0.0
-cp $https://github.com/happinesslijian/helm-install-harbor/harbor.values.yaml ./
+wget https://raw.githubusercontent.com/happinesslijian/k8s-application/master/helm-install-harbor/harbor.values.yaml
 kubectl create ns harbor
-helm install --name harbor -f harbor-values.yaml . --namespace harbor
+helm install --name harbor -f harbor.values.yaml . --namespace harbor
 ```
 ### 问题处理：
 + 安装完成之后你会发现core组件起不来,日志如下图所示 \
