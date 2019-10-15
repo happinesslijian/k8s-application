@@ -3,7 +3,7 @@
 - [安装helm](https://github.com/happinesslijian/k8s-application/tree/master/helm-install-harbor/install%20helm%20v2.14.1)
 - 下载并解压istio-1.3.0
 ```
-https://github.com/istio/istio/releases/download/1.3.0/istio-1.3.0-linux.tar.gz
+wget https://github.com/istio/istio/releases/download/1.3.0/istio-1.3.0-linux.tar.gz
 tar xf istio-1.3.0-linux.tar.gz
 cd istio-1.3.0
 ```
