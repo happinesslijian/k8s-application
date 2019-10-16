@@ -11,7 +11,7 @@ helm version
 > 可能会花费些时间，如不成功多执行几次即可
 - 接下来需要创建一个tiller的RBAC权限并更新其补丁
 ```
-kubectl create -f RBAC.yaml
+kubectl create -f https://raw.githubusercontent.com/happinesslijian/k8s-application/master/helm-install-harbor/install%20helm%20v2.14.1/RBAC.yaml
 kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
 ```
 - 验证helm版本
@@ -32,7 +32,7 @@ mv linux-amd64/tiller /usr/local/bin/
 - 安装 Tiller 并为其配置 Service account
 ```
 helm init --upgrade --tiller-image registry.cn-hangzhou.aliyuncs.com/google_containers/tiller:v2.14.2
-kubectl create -f RBAC.yaml
+kubectl create -f https://raw.githubusercontent.com/happinesslijian/k8s-application/master/helm-install-harbor/install%20helm%20v2.14.1/RBAC.yaml
 kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
 ```
 - 验证helm版本
