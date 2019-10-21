@@ -1,0 +1,16 @@
+service:
+  type: NodePort
+env: 
+  LDAP_ORGANISATION: "dycd.com"
+  LDAP_DOMAIN: "dycd.com"
+  LDAP_BACKEND: "hdb"
+  LDAP_TLS: "true"
+  LDAP_TLS_ENFORCE: "false"
+  LDAP_REMOVE_CONFIG_AFTER_SETUP: "true"
+adminPassword: admin
+configPassword: config
+persistence:
+  enabled: true
+  storageClass: "ldap"
+  accessMode: ReadWriteOnce
+  size: 8Gi
