@@ -2,11 +2,17 @@
 ### 说明：使用[helm](https://github.com/happinesslijian/k8s-application/tree/master/helm-install-harbor/install%20helm%20v2.14.1)安装,使用ldapAdmin来管理即可 提前准备一个[storageclass](https://github.com/happinesslijian/k8s-application/tree/master/nfs)
 安装openldap服务
 ```
-helm fetch --untar stable/openldap
-cd openldap
-wget 
-helm install --name ldap -f ldap-values.yaml . --namespace=ldap
-kubectl get pod,svc -n ldap
+$kubectl create ns ldap
+$helm fetch --untar stable/openldap
+$cd openldap
+$wget https://raw.githubusercontent.com/happinesslijian/k8s-application/master/ldap/ldap-values.yaml
+$helm install --name ldap -f ldap-values.yaml . --namespace=ldap
+$kubectl get pod,svc -n ldap
+NAME                               READY   STATUS    RESTARTS   AGE
+pod/ldap-openldap-fd74994b-8229j   1/1     Running   0          43m
+
+NAME                    TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)                       AGE
+service/ldap-openldap   NodePort   10.244.64.24   <none>        389:30908/TCP,636:30449/TCP   43m
 ```
 ## ldapAdmin
 - [配置验证如图](https://i.loli.net/2019/10/21/D57wM1GnQXziaC9.png)
