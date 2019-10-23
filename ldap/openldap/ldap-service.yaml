@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: public-service
+  labels:
+    app: ldap
+  name: ldap-service
+spec:
+  type: NodePort
+  ports:
+    - name: openldap
+      protocol: TCP
+      port: 389
+      nodePort: 30089 #使用客户端需要配置这里 供客户端连接
+      targetPort: openldap
+    - name: ssl-ldap-port
+      protocol: TCP
+      port: 636
+      targetPort: ssl-ldap-port
+  selector:
+    app: ldap

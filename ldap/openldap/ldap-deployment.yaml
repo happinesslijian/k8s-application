@@ -1,0 +1,70 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: public-service
+  name: ldap
+  labels:
+    app: ldap
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ldap
+    spec:
+      containers:
+        - name: ldap
+          image: osixia/openldap:1.2.2
+          args: ["--copy-service"]
+          volumeMounts:
+            - name: openldap-data
+              mountPath: /var/lib/ldap
+              subPath: data
+            - name: openldap-data
+              mountPath: /etc/ldap/slapd.d
+              subPath: config
+            - name: openldap-data
+              mountPath: /container/service/slapd/assets/certs
+              subPath: certs
+            - name: secret-volume
+              mountPath: /container/environment/01-custom
+            - name: container-run
+              mountPath: /container/run
+          ports:
+            - containerPort: 389
+              name: openldap
+            - name: ssl-ldap-port
+              containerPort: 636
+          livenessProbe:
+            tcpSocket:
+              port: openldap
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            failureThreshold: 10
+          readinessProbe:
+            tcpSocket:
+              port: openldap
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            failureThreshold: 10
+      volumes:
+        - name: openldap-data
+          persistentVolumeClaim:
+            claimName: openldap-data
+        - name: "secret-volume"
+          secret:
+            secretName: "ldap-secret"
+        - name: container-run
+          emptyDir: {}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: public-service
+  name: openldap-data
+spec:
+  accessModes: [ "ReadWriteMany" ]
+  storageClassName: "openldap" #提前准备一个storageClass
+  resources:
+    requests:
+      storage: 1Gi
