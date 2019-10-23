@@ -1,10 +1,6 @@
 # openldap
-## openldap in k8s(存在问题！！！！)   
-1. 克隆本项目到本地
-```
-git clone https://github.com/happinesslijian/openldap.git
-```
-2. 开始安装
+## openldap in k8s   
+1. 开始安装
 - 首先要修改实际使用的域名
 ```
 cd openldap/environment
@@ -31,7 +27,7 @@ Login DN：cn=admin,dc=dycd,dc=test,dc=com
 [如图所示](https://i.loli.net/2019/09/13/5P6wF7VqDGgHct2.png) \
 [如图所示](https://i.loli.net/2019/09/13/hncGua4DOSCeyJN.png)
 
-3. 使用客户端管理 \
+2. 使用客户端管理 \
 `保持汉化包和ldapadmin客户端程序在同一目录`
 - [下载ldapAdmin](https://sourceforge.net/projects/ldapadmin/files/ldapadmin/1.6.1/LdapAdminExe-1.6.1.zip/download)
 - [下载汉化包](http://www.ldapadmin.org/download/languages/download.php?id=3)
