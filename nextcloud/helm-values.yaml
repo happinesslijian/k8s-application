@@ -1,0 +1,46 @@
+nextcloud:
+  host: nextcloud.test.com
+  username: admin
+  password: "passwd"
+  update: 0
+  datadir: /var/www/html/data
+internalDatabase:
+  enabled: false
+  name: nextcloud
+mariadb:
+  enabled: true
+  db:
+    name: nextcloud
+    user: admin
+    password: "123456"
+  replication:
+    enabled: false
+  master:
+    persistence:
+      enabled: true
+      storageClass: "nextcloud"
+      accessMode: ReadWriteOnce
+      size: 8Gi
+service:
+  type: NodePort
+  port: 8080
+  loadBalancerIP: nil
+persistence:
+  enabled: true
+  storageClass: "nextcloud"
+  accessMode: ReadWriteOnce
+  size: 8Gi
+livenessProbe:
+  enabled: false
+  initialDelaySeconds: 30
+  periodSeconds: 15
+  timeoutSeconds: 5
+  failureThreshold: 3
+  successThreshold: 1
+readinessProbe:
+  enabled: false
+  initialDelaySeconds: 30
+  periodSeconds: 15
+  timeoutSeconds: 5
+  failureThreshold: 3
+  successThreshold: 1
