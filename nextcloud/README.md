@@ -5,7 +5,7 @@
 $kubectl create ns nextcloud
 $helm fetch --untar stable/nextcloud
 $cd nextcloud
-$wget 
+$wget https://raw.githubusercontent.com/happinesslijian/k8s-application/master/nextcloud/helm-values.yaml
 $helm install --name nextcloud -f helm-values.yaml . --namespace=nextcloud
 $kubectl get pod,svc -n nextcloud
 NAME                             READY   STATUS    RESTARTS   AGE
