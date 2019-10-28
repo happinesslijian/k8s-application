@@ -53,3 +53,4 @@ array (
 ),
 ···
 ```
+- [接入openldap](https://github.com/happinesslijian/k8s-application/tree/master/ldap#%E6%8E%A5%E5%85%A5%E5%BA%94%E7%94%A8%E8%AE%BE%E7%BD%AE)
