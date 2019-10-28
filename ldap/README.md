@@ -19,6 +19,7 @@ service/ldap-openldap   NodePort   10.244.64.24   <none>        389:30908/TCP,63
 
 ## 接入应用设置
 - [接入jumpserver设置](https://i.loli.net/2019/09/20/IRidulCYjp8BPbW.png)
+- [接入nextcloud](https://www.orgleaf.com/2839.html)
 - [接入容器gitlab应用](https://i.loli.net/2019/09/21/eSHlx5pnWf34PIz.png)
   - 这里使用的是helm安装的gitlab，内容填写在values.yaml文件里
   - 代码如下：
