@@ -8,4 +8,5 @@
 |[update-kubernetes](https://github.com/happinesslijian/k8s-application/tree/master/update-kubenetes)|升级k8s|None|kubeadm v1.15.1|
 |[istio](https://github.com/happinesslijian/k8s-application/tree/master/istio)|微服务治理||kubeadm v1.15.1|
 |[ingress-nginx&Basic Auth](https://github.com/happinesslijian/k8s-application/tree/master/ingress-nginx%26Basic%20Auth)|服务发现/域名访问|80/443|kubeadm v1.15.1|
-|[openldap](https://github.com/happinesslijian/k8s-application/tree/master/ldap)|统一管理用户|389|kubeadm v1.15.1|
+|[openldap](https://github.com/happinesslijian/k8s-application/tree/master/ldap)|统一认证用户|389|kubeadm v1.15.1|
+|[nextcloud](https://github.com/happinesslijian/k8s-application/tree/master/nextcloud)|私有云服务|80/8080/3306|kubeadm v1.15.1|
