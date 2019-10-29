@@ -97,3 +97,17 @@ AH00558: apache2: Could not reliably determine the server's fully qualified doma
 用户文件目录：
 `/data/k8s/nextcloud/data/$user/files/`
 
+## 关于HorizontalPodAutoscaler问题说明
+有时候创建完HPA后发现其状态都是unknown，解决办法在其对应的控制器下containers.下面添加`resources`和`requests`
+```
+      containers:
+        - image: nextcloud:apache
+          ···
+          resources:
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+            requests:
+              cpu: 1000m
+              memory: 1000Mi
+```
