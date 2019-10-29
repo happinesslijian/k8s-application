@@ -23,6 +23,13 @@ spec:
           name: nextcloud
           ports:
             - containerPort: 80
+          resources:
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+            requests:
+              cpu: 1000m
+              memory: 1000Mi
           env:
             - name: MYSQL_HOST
               value: mariadb:3306
