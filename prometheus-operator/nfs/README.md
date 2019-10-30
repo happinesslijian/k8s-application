@@ -3,6 +3,10 @@
 - prometheus-operator安装
 ```
 git clone https://github.com/coreos/kube-prometheus.git
+cd kube-prometheus/
+kubectl create -f manifests/setup
+kubectl get crd |grep coreos
+kubectl create -f manifests/
 ```
 安装完成后，修改`prometheus-prometheus.yaml`文件
 ```
