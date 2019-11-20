@@ -3,3 +3,5 @@ kind: StorageClass
 metadata:
   name: course-nfs-storage
 provisioner: fuseim.pri/ifs
+reclaimPolicy: Retain  #Retain #Recycle #Delete
+#StorageClass default is Delete Policy
