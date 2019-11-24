@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: solo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    component: mysql
+  name: mysql
+  namespace: solo
+spec:
+  selector:
+    matchLabels:
+      component: mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5.7.28
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 3306
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: password
+          - name: MYSQL_DATABASE
+            value: solo
+          - name: MYSQL_USER
+            value: solo
+          - name: MYSQL_PASSWORD
+            value: password
+        volumeMounts:
+        - name: mysql-config
+          mountPath: /etc/mysql/mysql.conf.d
+        - name: mysql-data
+          mountPath: /var/lib/mysql
+      nodeName: k8s-node2
+      volumes:
+      - name: mysql-config
+        hostPath:
+          path: /data/blog-solo/mysql-config/
+      - name: mysql-data
+        hostPath:
+          path: /data/blog-solo/mysql-data/
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: solo
+  labels:
+    component: mysql
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3306
+      name: http
+      protocol: TCP
+      targetPort: 3306
+  selector:
+    component: mysql

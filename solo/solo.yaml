@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    component: solo
+  name: solo
+  namespace: solo
+spec:
+  selector:
+    matchLabels:
+      component: solo
+  replicas: 1
+  template :
+    metadata:
+      labels:
+        component: solo
+    spec:
+      containers:
+        - name: solo
+          image: b3log/solo:v3.6.5
+          imagePullPolicy: IfNotPresent
+          args: ["--server_scheme=http", "--server_host=2d3c750f.cpolar.cn"]
+          ports:
+            - containerPort: 8080
+          env:
+#          - name: JDBC_URL
+#            value: mysql:3306/solo?useUnicode=yes&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+          - name: RUNTIME_DB
+            value: MYSQL
+          - name: JDBC_USERNAME
+            value: solo
+          - name: JDBC_PASSWORD
+            value: password
+          - name: JDBC_DRIVER
+            value: "com.mysql.cj.jdbc.Driver"
+          - name: JDBC_URL
+            value: "jdbc:mysql://10.244.72.95:3306/solo?useUnicode=yes&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC"
+      nodeName: k8s-node2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: solo
+  namespace: solo
+  labels:
+    component: solo
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+      name: http
+      nodePort: 30705
+  selector:
+    component: solo
