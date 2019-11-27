@@ -1,5 +1,5 @@
 # prometheus-operator使用nfs做持久化
-[安装nfs-storageClass](https://github.com/happinesslijian/nfs)
+[安装nfs-storageClass](https://github.com/happinesslijian/k8s-application/tree/master/nfs)
 - prometheus-operator安装
 ```
 git clone https://github.com/coreos/kube-prometheus.git
