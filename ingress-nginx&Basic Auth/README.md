@@ -139,3 +139,45 @@ spec:
           serviceName: prometheus-k8s #服务的service名字
           servicePort: 9090 #端口
 ``` 
+# 整合到一起
+- prometheus-operator部署完成之后只有prometheus和alertmanager和grafana三个组件需要开启dashboard,下面我们把上述三个组件的ingress整合到一起
+- 创建ingress.yaml
+```
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: monitoring
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: prometheus-auth
+    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - admin'
+spec:
+  tls:
+  - hosts:
+    - k8s.promethues.com
+    secretName: prometheus-https
+  rules:
+  - host: k8s.prometheus.com
+    http:
+      paths:
+      - path:
+        backend:
+          serviceName: prometheus-k8s
+          servicePort: 9090
+  - host: k8s.alertmanager.com
+    http:
+      paths:
+      - path:
+        backend:
+          serviceName: alertmanager-main
+          servicePort: 9093
+  - host: k8s.grafana.com
+    http:
+      paths:
+      - path:
+        backend:
+          serviceName: grafana
+          servicePort: 3000
+```
