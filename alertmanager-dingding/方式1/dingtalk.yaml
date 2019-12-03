@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dingtalk-hook
+  namespace: monitoring
+spec:
+  template:
+    metadata:
+      labels:
+        app: dingtalk-hook
+    spec:
+      containers:
+      - name: dingtalk-hook
+        image: timonwong/prometheus-webhook-dingtalk:v0.3.0
+        args:
+          - '--ding.profile=default=https://oapi.dingtalk.com/robot/send?access_token=10bda98979ae2155b6822b699cde1841d4fbd8514c0441bbbb4485caddf3a388x'
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8060
+        resources:
+          requests:
+            cpu: 100m
+            memory: 32Mi
+          limits:
+            cpu: 200m
+            memory: 64Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dingtalk-hook
+  namespace: monitoring
+spec:
+  ports:
+    - port: 8060
+      protocol: TCP
+      targetPort: 8060
+      name: http
+  selector:
+    app: dingtalk-hook
+  type: ClusterIP
