@@ -5,7 +5,7 @@
 - 以下操作都在prometheus-operator的**manifests**目录下进行 \
 下载deployment文件并创建
 ```
-wget xxxxxxx
+wget https://raw.githubusercontent.com/happinesslijian/k8s-application/master/alertmanager-dingding/%E6%96%B9%E5%BC%8F2/webhook-dingtalk.yaml
 kubectl create -f webhook-dingtalk.yaml
 ```
 #### 配置alertmanager
