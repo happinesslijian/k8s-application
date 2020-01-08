@@ -25,7 +25,7 @@ yum makecache fast && yum -y install kubeadm-1.15.2 kubectl-1.15.2
 ```
 kubeadm upgrade plan
 ```
-[如图所示](https://i.loli.net/2019/09/10/9RDFXGd1qProzhU.png)
+[如图所示](https://i.loli.net/2020/01/08/6SZmvkwcHRLg1x9.png)
 - 尝试升级 **说明：** 即使这里失败了，也不会影响正常集群运行,在输出最后看到successfully即可
 ```
 kubeadm upgrade apply v1.15.2 --config kubeadm-config.yaml --dry-run
