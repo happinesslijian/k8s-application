@@ -3,4 +3,4 @@
 
 |方式1|方式2|方式3|
 |:--:|:--:|:--:|
-|[click me](https://github.com/happinesslijian/k8s-application/tree/master/alertmanager-dingding/%E6%96%B9%E5%BC%8F1)|[click me]()|[click me]()|
+|[click me](https://github.com/happinesslijian/k8s-application/tree/master/alertmanager-dingding/%E6%96%B9%E5%BC%8F1)|[click me](https://github.com/happinesslijian/k8s-application/tree/master/alertmanager-dingding/%E6%96%B9%E5%BC%8F2)|[click me]()|
