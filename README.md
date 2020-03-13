@@ -11,3 +11,4 @@
 |[openldap](https://github.com/happinesslijian/k8s-application/tree/master/ldap)|统一认证用户|389|kubeadm v1.15.1|
 |[nextcloud](https://github.com/happinesslijian/k8s-application/tree/master/nextcloud)|私有云服务|80/8080/3306|kubeadm v1.15.1|
 |[solo](https://github.com/happinesslijian/k8s-application/tree/master/solo)|solo博客系统|8080/3306|kubeadm v1.15.1|
+|[zabbix]()|监控系统|10051/10052|v1.15.6|
