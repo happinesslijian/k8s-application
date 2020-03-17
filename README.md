@@ -1,4 +1,12 @@
 # 此项目都在k8s集群内部署
+<a href="https://github.com/happinesslijian/k8s-application/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/happinesslijian/k8s-application"></a>
+<a href="https://github.com/happinesslijian/k8s-application/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/happinesslijian/k8s-application"></a>
+<a href="https://github.com/happinesslijian/k8s-application/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/happinesslijian/k8s-application"></a>
+<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/happinesslijian/k8s-application">
+<img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/happinesslijian/k8s-application">
+<img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/happinesslijian/k8s-application">
+<a href="https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fhappinesslijian%2FVM"><img alt="Twitter" src="https://img.shields.io/twitter/url?url=https%3A%2F%2Ftwitter.com%2FHappinessjian"></a>
+
 |应用名称|作用|端口|部署环境|
 |:--:|:--:|:--:|:--:|
 |[efk](https://github.com/happinesslijian/k8s-application/tree/master/EFK)|日志收集分析展示|9200/9300/5601|kubeadm v1.15.1|
