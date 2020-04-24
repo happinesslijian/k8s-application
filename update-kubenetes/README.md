@@ -11,7 +11,7 @@
 ```
 kubeadm config view
 ```
-2. 把上面打印出来的信息复制粘贴到kubeadm-config.yaml中（将上面的imageRepository值更改为：`gcr.azk8s.cn/google_containers`）\
+2. 把上面打印出来的信息复制粘贴到kubeadm-config.yaml中（将上面的imageRepository值更改为：~`gcr.azk8s.cn/google_containers`~ registry.aliyuncs.com/google_containers）\
 [如图所示](https://i.loli.net/2019/09/10/Wg8hB5fpDkcjbix.png)
 
 3. 这里指定你要升级的版本注意：不能夸版本升级
