@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: droppy
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: droppy
+  namespace: droppy
+  labels:
+    app: droppy
+spec:
+  ports:
+    - port: 8989
+      targetPort: 8989
+      nodePort: 32767
+  type: NodePort
+  selector:
+    app: droppy
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: droppy-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /data/droppy/
+    server: 10.20.80.206
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: droppy-pvc
+  namespace: droppy
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: droppy
+  name: droppy
+  namespace: droppy
+spec:
+  selector:
+    matchLabels:
+      app: droppy
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: droppy
+    spec:
+      containers:
+        - image: silverwind/droppy:latest
+          imagePullPolicy: IfNotPresent
+          name: droppy
+          ports:
+            - containerPort: 8989
+          resources:
+            limits: 
+              cpu: 1000m
+              memory: 500Mi
+            requests:
+              cpu: 1000m
+              memory: 500Mi
+          volumeMounts:
+          - name: files
+            mountPath: /files
+      restartPolicy: Always
+      volumes:
+        - name: files
+          persistentVolumeClaim:
+            claimName: droppy-pvc
