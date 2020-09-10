@@ -1,0 +1,50 @@
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: kubeonoff
+  namespace: ailab
+  labels:
+    app: kubeonoff
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: kubernetes-dashboard
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - resource:
+        name: cpu
+        targetAverageUtilization: 1
+      type: Resource
+    - resource:
+        name: memory
+        targetAverageUtilization: 3
+      type: Resource
+
+---
+
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: lijian
+  labels:
+    app: lijian
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: lijian
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - resource:
+        name: cpu
+        targetAverageUtilization: 80
+      type: Resource
+    - resource:
+        name: memory
+        targetAverageUtilization: 80
+      type: Resource
+
+
