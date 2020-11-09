@@ -2,7 +2,7 @@
 - 下载mysql和solo文件
   - 文件中使用了nodeName跳过了kubeSchedule,指定其运行在k8s-node2上.
 ```
-wget https://raw.githubusercontent.com/happinesslijian/k8s-application/master/solo/mysql.yaml && wget https://raw.githubusercontent.com/happinesslijian/k8s-application/master/solo/solo.yaml
+wget -c https://raw.staticdn.net/happinesslijian/k8s-application/master/solo/mysql.yaml && wget -c https://raw.staticdn.net/happinesslijian/k8s-application/master/solo/solo.yaml
 ```
 - 安装mysql和solo
 ```
