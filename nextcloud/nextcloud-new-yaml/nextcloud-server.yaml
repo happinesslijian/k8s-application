@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextcloud-server
+  namespace: nextcloud
+  labels:
+    app: nextcloud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod-label: nextcloud-server-pod
+  template:
+    metadata:
+      labels:
+        pod-label: nextcloud-server-pod
+    spec:
+      nodeName: node1
+      containers:
+      - name: nextcloud
+        image: nextcloud:latest
+        volumeMounts:
+        - name: server-storage
+          mountPath: /var/www/html
+          subPath: server-data
+      volumes:
+      - name: server-storage
+        hostPath:
+          path: /data/nextcloud
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nextcloud-server
+  namespace: nextcloud
+  labels:
+    app: nextcloud
+spec:
+  selector:
+    pod-label: nextcloud-server-pod
+  ports:
+  - protocol: TCP
+    port: 80

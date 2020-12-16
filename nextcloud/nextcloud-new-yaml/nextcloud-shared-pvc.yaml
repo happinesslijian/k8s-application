@@ -1,0 +1,13 @@
+#本次没有使用PVC
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: nextcloud-shared-storage-claim
+#  labels:
+#    app: nextcloud
+#spec:
+#  accessModes:
+#  - ReadWriteOnce
+#  resources:
+#    requests:
+#      storage: 256Mi

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monica-db
+  namespace: monica
+  labels:
+    app: monica
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod-label: monica-db-pod
+  template:
+    metadata:
+      labels:
+        pod-label: monica-db-pod
+    spec:
+      nodeName: node2
+      containers:
+      - name: mysql
+        image: mysql:5.7
+        env:
+        - name: MYSQL_DATABASE
+          value: monica
+        envFrom:
+        - secretRef:
+            name: monica-db-secret
+        volumeMounts:
+        - name: db-storage
+          mountPath: /var/lib/mysql
+          subPath: mysql-data
+      volumes:
+      - name: db-storage
+        hostPath:
+          path: /data/monica/
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: monica-db
+  namespace: monica
+  labels:
+    app: monica
+spec:
+  selector:
+    pod-label: monica-db-pod
+  ports:
+  - protocol: TCP
+    port: 3306
