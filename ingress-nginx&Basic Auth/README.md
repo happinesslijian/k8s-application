@@ -31,6 +31,8 @@ secret/prometheus-auth created
 ```
 $ openssl genrsa -out tls.key 2048
 $ openssl req -new -x509 -days 365 -key tls.key -out tls.crt -subj /C=CN/ST=Beijingshi/L=Beijing/O=devops/CN=cn
+## 查看openssl自创证书有效期
+$ openssl x509 -in tls.crt -noout -dates
 $ kubectl create secret tls prometheus-https --cert=tls.crt --key=tls.key -n monitoring
 secret/prometheus-https created
 ```
