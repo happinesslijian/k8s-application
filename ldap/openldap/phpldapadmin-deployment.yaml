@@ -11,6 +11,9 @@ metadata:
   name: phpldapadmin
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: phpldapadmin
   strategy: {}
   template:
     metadata:
