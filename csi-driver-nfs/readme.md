@@ -9,7 +9,7 @@
 
 ```
 #部署nfs csi驱动
-kubectl apply -f .
+bash install-driver.sh
 #部署nfs服务器
 kubectl apply -f nfs-server/.
 #部署sc
