@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#历史脚本,现已废弃
 #参考链接：https://github.com/kubernetes-csi/csi-driver-nfs
 
 ver="master"
