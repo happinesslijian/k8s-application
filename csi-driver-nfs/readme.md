@@ -34,7 +34,8 @@ kubectl -n kube-system get pod -o wide -l app=csi-nfs-node
 ```
 4 使用方式
 > **说明：**  
-我部署了prometheus 并使用了storageclass 下面贴上`storageclass.yaml`配置
+我部署了prometheus 并使用了storageclass
+贴上`storageclass.yaml`配置
 ```
 ---
 apiVersion: storage.k8s.io/v1
@@ -54,6 +55,67 @@ mountOptions:
 #  - nconnect=8
   - hard
   - nfsvers=4.1
+```
+`prometheus-prometheus.yaml`关联名为`prometheus`的`storageclass` 如下
+```
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  labels:
+    app.kubernetes.io/component: prometheus
+    app.kubernetes.io/instance: k8s
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 2.34.0
+  name: k8s
+  namespace: monitoring
+spec:
+  alerting:
+    alertmanagers:
+    - apiVersion: v2
+      name: alertmanager-main
+      namespace: monitoring
+      port: web
+  enableFeatures: []
+  externalLabels: {}
+  image: quay.io/prometheus/prometheus:v2.34.0
+  nodeSelector:
+    kubernetes.io/os: linux
+  podMetadata:
+    labels:
+      app.kubernetes.io/component: prometheus
+      app.kubernetes.io/instance: k8s
+      app.kubernetes.io/name: prometheus
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 2.34.0
+  podMonitorNamespaceSelector: {}
+  podMonitorSelector: {}
+  probeNamespaceSelector: {}
+  probeSelector: {}
+  replicas: 2
+  resources:
+    requests:
+      memory: 400Mi
+  ruleNamespaceSelector: {}
+  ruleSelector: {}
+#以下部分用于关联storageclass
+  securityContext:
+    fsGroup: 2000
+    runAsNonRoot: true
+    runAsUser: 1000
+  storage:
+    volumeClaimTemplate:
+      spec:
+        storageClassName: prometheus
+        resources:
+          requests:
+            storage: 10Gi
+  retention: 10d
+#以上部分用于关联storageclass
+  serviceAccountName: prometheus-k8s
+  serviceMonitorNamespaceSelector: {}
+  serviceMonitorSelector: {}
+  version: 2.34.0
 ```
 5 验证  
 查看prometheus组件,可以看到pod`prometheus-k8s-0`和`prometheus-k8s-1`已经成功运行了  
@@ -112,7 +174,11 @@ drwxrwxrwx. 3 root root 27 Mar 26 14:36 pvc-a4eaaa48-9fd2-4915-8321-fb2e6b78daee
 ```
 
 ### 遇见的问题  
-nconnect=8后补
+在storageclass.yaml文件中注释了`nconnect=8` 解释如下：
+Linux 有一个名为“nconnect”的新功能，它可以为单个 NFS 挂载启用多个 TCP 连接。将 nconnect 设置为挂载选项可使 NFS 客户端为同一主机打开多个“传输连接”。
+nconnect 包含在linux 内核版本 >= 5.3中。（所以它在使用 Linux 内核 5.4 的 Ubuntu 20.04 中可用）。
+当前 nconnect 打开的客户端-服务器连接数限制为8
+如果开启会报错`failed: exit status 32`  [如图](https://s2.loli.net/2022/03/26/XVp76gaxvbRP2rJ.png)
 
 ## 题外话
 - 如下两个image在国内拉取不了,采用了Googlecloud拉取并推送到阿里云上
