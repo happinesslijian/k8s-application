@@ -1,20 +1,118 @@
-# 安装csi-driver-nfs
+# csi-driver-nfs
 
-1. 在Kubernetes集群上部署NFS服务器   
-参考：https://github.com/kubernetes-csi/csi-driver-nfs/blob/master/deploy/example/nfs-provisioner/README.md  
-2. 在kubernetes集群上安装NFS CSI驱动主版本   
-参考：https://github.com/kubernetes-csi/csi-driver-nfs/blob/master/docs/install-csi-driver-master.md
-3. 部署storageclass  
-参考：https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/deploy/example/storageclass-nfs.yaml
+[本文参考链接](https://github.com/kubernetes-csi/csi-driver-nfs)  
+[本文参考链接](https://github.com/kubernetes-csi/csi-driver-nfs/blob/master/deploy/example/nfs-provisioner/README.md)  
+[本文参考链接](https://github.com/kubernetes-csi/csi-driver-nfs/blob/master/docs/install-csi-driver-v3.1.0.md)
+
+# 概述:
+这是[NFS](https://en.wikipedia.org/wiki/Network_File_System) [CSI](https://kubernetes-csi.github.io/docs/)驱动程序的存储库，csi 插件名称：nfs.csi.k8s.io. 此驱动程序需要现有且已配置的 NFSv3 或 NFSv4 服务器，它通过在 NFS 服务器下创建新的子目录来支持通过持久卷声明动态配置持久卷。
+
+### 环境介绍：
+| 名称 | 集群版本 | 节点角色 | 安装方式 | 系统版本 |
+| :--: | :--: | :--: | :--: | :--: |
+| node1 | v1.19.4 | control-plane,etcd,master | kubeadm | CentOS Linux release 7.6.1810 (Core) |
+| node2 | v1.19.4 | control-plane,etcd,master | kubeadm | CentOS Linux release 7.6.1810 (Core) |
+| node3 | v1.19.4 | control-plane,etcd,master | kubeadm | CentOS Linux release 7.6.1810 (Core) |
+| node4 | v1.19.4 | worker | kubeadm | CentOS Linux release 7.6.1810 (Core) |
+| node5 | v1.19.4 | worker | kubeadm | CentOS Linux release 7.6.1810 (Core) |
+
+> **须知：**
+前提确保所有的服务器上都安装了[nfs](https://github.com/happinesslijian/VM/tree/master/VM%E5%AE%89%E8%A3%85nfs/%E5%AE%89%E8%A3%85)
+
+1 要在 Kubernetes 集群上创建 NFS 配置器，请运行以下命令
+```
+kubectl create -f https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/deploy/example/nfs-provisioner/nfs-server.yaml
+```
+2 在kubernetes集群上安装NFS CSI驱动v3.1.0版本
+```
+curl -skSL https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/v3.1.0/deploy/install-driver.sh | bash -s v3.1.0 --
+```
+3 检查pod状态
+```
+kubectl -n kube-system get pod -o wide -l app=csi-nfs-controller
+kubectl -n kube-system get pod -o wide -l app=csi-nfs-node
+```
+4 使用方式
+> **说明：**  
+我部署了prometheus 并使用了storageclass 下面贴上`storageclass.yaml`配置
+```
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: prometheus
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: nfs-server.default.svc.cluster.local
+  share: /
+  # csi.storage.k8s.io/provisioner-secret is only needed for providing mountOptions in DeleteVolume
+  # csi.storage.k8s.io/provisioner-secret-name: "mount-options"
+  # csi.storage.k8s.io/provisioner-secret-namespace: "default"
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+mountOptions:
+#  - nconnect=8
+  - hard
+  - nfsvers=4.1
+```
+5 验证  
+查看prometheus组件,可以看到pod`prometheus-k8s-0`和`prometheus-k8s-1`已经成功运行了  
+```
+[root@node1 csi-driver-nfs]# kubectl get pod -n monitoring
+NAME                                   READY   STATUS             RESTARTS   AGE
+alertmanager-main-0                    2/2     Running            0          24h
+alertmanager-main-1                    2/2     Running            0          24h
+alertmanager-main-2                    2/2     Running            0          24h
+blackbox-exporter-676d976865-fg5bg     3/3     Running            0          24h
+grafana-55b8fff56-vm29g                1/1     Running            0          24h
+kube-state-metrics-5d6885d89-n4922     2/3     Running            0          24h
+node-exporter-9s4tr                    2/2     Running            0          24h
+node-exporter-gn5lq                    2/2     Running            0          24h
+node-exporter-j2f7g                    2/2     Running            0          24h
+node-exporter-qjlxb                    2/2     Running            0          24h
+node-exporter-t2ddx                    2/2     Running            0          24h
+prometheus-adapter-6cf5d8bfcf-98zjd    1/1     Running            0          24h
+prometheus-adapter-6cf5d8bfcf-dd6ls    1/1     Running            0          24h
+prometheus-k8s-0                       2/2     Running            0          53m
+prometheus-k8s-1                       2/2     Running            0          53m
+prometheus-operator-7f58778b57-f67hp   2/2     Running            7          24h
+```
+对应的数据文件放在了pod`nfs-server-56dfcc48c8-zcfj4`所在节点的`/nfs/vol`目录下
 
 ```
-#部署nfs csi驱动
-bash install-driver.sh
-#部署nfs服务器
-kubectl apply -f nfs-server/.
-#部署sc
-kubectl apply -f storageclass/.
+[root@node1 csi-driver-nfs]# kubectl get pod -o wide
+NAME                          READY   STATUS    RESTARTS   AGE    IP              NODE    NOMINATED NODE   READINESS GATES
+nfs-server-56dfcc48c8-zcfj4   1/1     Running   0          114m   10.244.10.79    node4   <none>           <none>
+nginx-nfs-example             1/1     Running   0          72m    10.244.33.141   node5   <none>           <none>
+
+[root@node4 ~]# ll /nfs-vol/
+total 0
+drwxrwxrwx. 3 root root 27 Mar 26 14:48 pvc-4adea28f-b510-4d62-9589-3a3e95cd5c1b
+drwxrwxrwx. 3 root root 27 Mar 26 14:36 pvc-a4eaaa48-9fd2-4915-8321-fb2e6b78daee
+
+[root@node4 ~]# tree /nfs-vol/
+/nfs-vol/
+├── pvc-4adea28f-b510-4d62-9589-3a3e95cd5c1b
+│   └── prometheus-db
+│       ├── chunks_head
+│       ├── lock
+│       ├── queries.active
+│       └── wal
+│           └── 00000000
+└── pvc-a4eaaa48-9fd2-4915-8321-fb2e6b78daee
+    └── prometheus-db
+        ├── chunks_head
+        ├── lock
+        ├── queries.active
+        └── wal
+            └── 00000000
+
+8 directories, 6 files
+
 ```
+
+### 遇见的问题  
+nconnect=8后补
 
 ## 题外话
 - 如下两个image在国内拉取不了,采用了Googlecloud拉取并推送到阿里云上
