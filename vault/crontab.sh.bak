@@ -1,0 +1,27 @@
+#!/bin/bash
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+read -r -p "输入vault数量: " input0
+str1="0/1"
+for ((j=0;j<="input0";j++))
+do
+kubectl get pod | grep vault-"$j"
+if [ "$?" = 0 ]; then
+	status=`kubectl get pod | grep vault | awk '{print $2}'`
+		if [ "$status" = "$str1" ]; then
+			for ((i=0;i<="input0";i++))
+			do
+				kubectl exec vault-"$i" -- vault operator init -key-shares=1 -key-threshold=1 -format=json > keys.json
+				VAULT_UNSEAL_KEY=$(cat keys.json | jq -r ".unseal_keys_b64[]")
+				echo $VAULT_UNSEAL_KEY
+				VAULT_ROOT_KEY=$(cat keys.json | jq -r ".root_token")
+				echo $VAULT_ROOT_KEY
+				kubectl exec vault-"$i" -- vault operator unseal $VAULT_UNSEAL_KEY
+				sleep 10
+			done
+		else
+			echo "false"
+		fi
+else
+	echo "None.No vault pod."
+fi
+done
